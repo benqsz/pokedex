@@ -16,6 +16,8 @@ function Search() {
     replace(`${pathname}?${params.toString()}`);
   }, 300);
 
+  if (pathname !== '/') return null;
+
   return (
     <div>
       <label className="sr-only" htmlFor="search">

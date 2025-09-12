@@ -43,3 +43,13 @@ export const getPaginatedPokemons = async (
     } as NamedAPIResourceList;
   }
 };
+
+export const getPokemonImages = (sprites: Pokemon['sprites']) => {
+  const images: string[] = [];
+  if (sprites.front_default) images.push(sprites.front_default);
+  for (const [key, value] of Object.entries(sprites))
+    if (key !== 'front_default' && typeof value === 'string' && value)
+      images.push(value);
+
+  return images;
+};

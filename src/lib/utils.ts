@@ -11,7 +11,7 @@ export const logError = (where: string, error: unknown) =>
   console.error(`ERROR - ${where}:`, error);
 
 export const toTitleCase = (str: string) =>
-  str.charAt(0).toUpperCase() + str.slice(1);
+  str.replace(/-/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
 
 export const arrayFromNumber = (n: number) =>
   Array.from({ length: n }).map((_, i) => i);
