@@ -1,7 +1,7 @@
 import { NamedAPIResourceList, Pokemon } from 'pokenode-ts';
 import { getURL, logError } from '@/lib/utils';
 
-const DEFAULT_LIMIT = 12;
+export const DEFAULT_LIMIT = 12;
 const DEFAULT_OFFSET = 0;
 
 const fetchApi = async (url: string) => {
@@ -22,10 +22,15 @@ export const getPokemon = async (identifier: string | number) => {
   }
 };
 
-export const getPaginatedPokemons = async (limit?: number, offset?: number) => {
+export const getPaginatedPokemons = async (
+  limit?: number,
+  offset?: number,
+  query?: string,
+) => {
   try {
+    const finalQuery = query ? `&query=${query}` : '';
     const data: NamedAPIResourceList = await fetchApi(
-      `/api/pokemons?limit=${limit || DEFAULT_LIMIT}&offset=${offset || DEFAULT_OFFSET}`,
+      `/api/pokemons?limit=${limit || DEFAULT_LIMIT}&offset=${offset || DEFAULT_OFFSET}${finalQuery}`,
     );
     return data;
   } catch (error) {
