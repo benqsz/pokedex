@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PokemonClient } from 'pokenode-ts';
+import { Constants, PokemonClient } from 'pokenode-ts';
 import { getURL, logError } from '@/lib/utils';
 
 const API = new PokemonClient();
-
-const API_URL = 'https://pokeapi.co/api/v2/';
 
 export async function GET(_req: NextRequest) {
   const searchParams = _req.nextUrl.searchParams;
@@ -21,12 +19,17 @@ export async function GET(_req: NextRequest) {
 
   try {
     const pokemons = await API.listPokemons(offset, limit);
+    const apiURL = Constants.BaseURL.REST;
 
     return NextResponse.json(
       {
         ...pokemons,
-        next: pokemons.next?.replace(API_URL, getURL),
-        previous: pokemons.previous?.replace(API_URL, getURL),
+        next: pokemons.next?.replace(apiURL, getURL),
+        previous: pokemons.previous?.replace(apiURL, getURL),
+        results: pokemons.results.map(pokemon => ({
+          ...pokemon,
+          url: pokemon.url.replace(apiURL, getURL),
+        })),
       },
       { status: 200 },
     );

@@ -14,10 +14,10 @@ const fetchApi = async (url: string) => {
 
 export const getPokemon = async (identifier: string | number) => {
   try {
-    const data: Pokemon = await fetchApi(`api/pokemon/${identifier}`);
+    const data: Pokemon = await fetchApi(`/api/pokemon/${identifier}`);
     return data;
   } catch (error) {
-    logError(`getPokemon ${name}`, error);
+    logError(`getPokemon ${identifier}`, error);
     return null;
   }
 };
@@ -25,7 +25,7 @@ export const getPokemon = async (identifier: string | number) => {
 export const getPokemons = async (limit?: number, offset?: number) => {
   try {
     const data: NamedAPIResourceList = await fetchApi(
-      `api/pokemons?limit=${limit || DEFAULT_LIMIT}&offset=${offset || DEFAULT_OFFSET}`,
+      `/api/pokemons?limit=${limit || DEFAULT_LIMIT}&offset=${offset || DEFAULT_OFFSET}`,
     );
     return data;
   } catch (error) {
