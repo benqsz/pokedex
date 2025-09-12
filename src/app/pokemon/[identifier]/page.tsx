@@ -1,9 +1,9 @@
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { Container } from '@/components/ui/container';
 import { MainWrapper } from '@/components/ui/main-wrapper';
-import { getPokemon, getPokemonImages } from '@/lib/api';
+import { getPokemon } from '@/lib/api';
 import { toTitleCase } from '@/lib/utils';
-import Image from 'next/image';
 
 // TODO - metadata & prerendering
 
@@ -33,7 +33,7 @@ export default async function PokemonPage(
         </div>
         <div>
           <h2>Stats</h2>
-          {pokemon.stats.map(({ stat, base_stat }) => (
+          {pokemon.stats.map(({ base_stat, stat }) => (
             <div key={stat.name}>
               {toTitleCase(stat.name)}: {base_stat}
             </div>
@@ -52,7 +52,10 @@ export default async function PokemonPage(
         </div>
 
         <Image
-          src={getPokemonImages(pokemon.sprites)[0]}
+          src={
+            pokemon.sprites.other!['official-artwork']?.front_default ||
+            (pokemon.sprites.front_default as string)
+          }
           width={200}
           height={200}
           priority

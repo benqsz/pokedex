@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { PokemonList } from '@/components/pokemon-list';
 import { PokemonListSkeleton } from '@/components/pokemon-list-skeleton';
 import { PokemonPagination } from '@/components/pokemon-pagination';
+import { Search } from '@/components/search';
 import { Container } from '@/components/ui/container';
 import { MainWrapper } from '@/components/ui/main-wrapper';
 import { DEFAULT_LIMIT, getPaginatedPokemons } from '@/lib/api';
@@ -20,11 +21,12 @@ export default async function HomePage(props: PageProps<'/'>) {
   return (
     <MainWrapper>
       <Container>
+        <Search />
         <h1>Pokedex</h1>
         <Suspense key={query + currentPage} fallback={<PokemonListSkeleton />}>
           <PokemonList pokemons={paginatedPokemons.results} />
         </Suspense>
-        <PokemonPagination totalPages={totalPages} visiblePages={5} />
+        <PokemonPagination totalPages={totalPages} visiblePages={3} />
       </Container>
     </MainWrapper>
   );

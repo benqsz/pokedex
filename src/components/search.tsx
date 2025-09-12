@@ -1,6 +1,7 @@
 'use client';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
+import { Input } from '@/components/ui/input';
 
 function Search() {
   const searchParams = useSearchParams();
@@ -9,21 +10,19 @@ function Search() {
 
   const handleSearch = useDebouncedCallback((term: string) => {
     const params = new URLSearchParams(searchParams);
-    params.set('page', '1');
+    params.delete('page');
     if (term) params.set('query', term);
     else params.delete('query');
 
     replace(`${pathname}?${params.toString()}`);
   }, 300);
 
-  if (pathname !== '/') return null;
-
   return (
     <div>
       <label className="sr-only" htmlFor="search">
         Search for pokemons
       </label>
-      <input
+      <Input
         id="search"
         type="search"
         placeholder="Search for pokemons!"

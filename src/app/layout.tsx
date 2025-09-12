@@ -2,6 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
+import { Providers } from '@/components/providers';
 
 export const metadata: Metadata = {
   title: {
@@ -12,11 +13,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
-        <Header />
-        {children}
-        <Footer />
+        <Providers>
+          <Header />
+          {children}
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

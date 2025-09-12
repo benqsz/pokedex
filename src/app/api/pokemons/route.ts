@@ -25,7 +25,7 @@ export async function GET(_req: NextRequest) {
   }
 
   try {
-    const pokemons = await API.listPokemons(offset, limit);
+    const pokemons = await API.listPokemons(offset, 10000);
     const apiURL = Constants.BaseURL.REST;
 
     const fuse = new Fuse(pokemons.results, fuseOptions);
@@ -39,7 +39,7 @@ export async function GET(_req: NextRequest) {
         count: query ? results.length : pokemons.count,
         next: pokemons.next?.replace(apiURL, getURL),
         previous: pokemons.previous?.replace(apiURL, getURL),
-        results: results.map(pokemon => ({
+        results: results.slice(0, limit).map(pokemon => ({
           ...pokemon,
           url: pokemon.url.replace(apiURL, getURL),
         })),

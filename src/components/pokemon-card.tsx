@@ -1,7 +1,8 @@
+import * as motion from 'motion/react-client';
 import Image from 'next/image';
 import Link from 'next/link';
 import { NamedAPIResource } from 'pokenode-ts';
-import { getPokemon, getPokemonImages } from '@/lib/api';
+import { getPokemon } from '@/lib/api';
 import { toTitleCase } from '@/lib/utils';
 
 type Props = {
@@ -13,15 +14,31 @@ async function PokemonCard({ pokemon }: Props) {
   if (!pokemonData) return null;
 
   return (
-    <li className="border text-center">
-      <Link href={`/pokemon/${pokemonData.id}`}>
-        <Image
-          src={getPokemonImages(pokemonData.sprites)[0]}
-          alt={`${toTitleCase(pokemonData.name)} sprite`}
-          width={160}
-          height={160}
-          className="mx-auto"
-        />
+    <li className="relative h-60 rounded-md border pt-2">
+      <Link
+        href={`/pokemon/${pokemonData.id}`}
+        className="flex h-full flex-col items-center justify-center"
+      >
+        <span className="text-secondary-foreground absolute top-1 left-1">
+          #{pokemonData.id.toString().padStart(3, '0')}
+        </span>
+        <motion.div
+          initial={false}
+          className="flex-grow"
+          whileHover={{ scale: 1.1 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Image
+            src={
+              pokemonData.sprites.other!['official-artwork']?.front_default ||
+              (pokemonData.sprites.front_default as string)
+            }
+            alt={`${toTitleCase(pokemonData.name)} sprite`}
+            width={160}
+            height={160}
+            className="m-auto h-9/10 w-auto"
+          />
+        </motion.div>
         <h2>{toTitleCase(pokemonData.name)}</h2>
       </Link>
     </li>
