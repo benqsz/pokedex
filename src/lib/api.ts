@@ -22,7 +22,7 @@ export const getPokemon = async (identifier: string | number) => {
   }
 };
 
-export const getPokemons = async (limit?: number, offset?: number) => {
+export const getPaginatedPokemons = async (limit?: number, offset?: number) => {
   try {
     const data: NamedAPIResourceList = await fetchApi(
       `/api/pokemons?limit=${limit || DEFAULT_LIMIT}&offset=${offset || DEFAULT_OFFSET}`,

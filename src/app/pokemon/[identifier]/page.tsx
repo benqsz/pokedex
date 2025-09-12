@@ -1,5 +1,7 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { Container } from '@/components/ui/container';
+import { MainWrapper } from '@/components/ui/main-wrapper';
 import { getPokemon } from '@/lib/api';
 import { toTitleCase } from '@/lib/utils';
 
@@ -34,5 +36,11 @@ export default async function PokemonPage(
   const pokemon = await getPokemon(identifier);
   if (!pokemon) notFound();
 
-  return <div>{pokemon.name}</div>;
+  return (
+    <MainWrapper>
+      <Container>
+        <h1>{pokemon.name}</h1>
+      </Container>
+    </MainWrapper>
+  );
 }
