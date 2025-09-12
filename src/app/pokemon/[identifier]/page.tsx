@@ -2,10 +2,31 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { Container } from '@/components/ui/container';
 import { MainWrapper } from '@/components/ui/main-wrapper';
-import { getPokemon } from '@/lib/api';
+import { getPokemon, getPokemonDirectly, getPokemonsDirectly } from '@/lib/api';
 import { toTitleCase } from '@/lib/utils';
+import { Metadata } from 'next';
 
-// TODO - metadata & prerendering
+export async function generateMetadata(
+  props: PageProps<'/pokemon/[identifier]'>,
+): Promise<Metadata> {
+  const { identifier } = await props.params;
+  const pokemon = await getPokemonDirectly(identifier);
+  return {
+    title: toTitleCase(pokemon.name),
+  };
+}
+
+export const generateStaticParams = async () => {
+  const pokemons = await getPokemonsDirectly();
+  return [
+    ...pokemons.map(pokemon => ({
+      identifier: pokemon.name,
+    })),
+    ...pokemons.map(pokemon => ({
+      identifier: pokemon.id.toString(),
+    })),
+  ];
+};
 
 export default async function PokemonPage(
   props: PageProps<'/pokemon/[identifier]'>,

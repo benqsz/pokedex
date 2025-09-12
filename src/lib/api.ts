@@ -1,4 +1,4 @@
-import { NamedAPIResourceList, Pokemon } from 'pokenode-ts';
+import { NamedAPIResourceList, Pokemon, PokemonClient } from 'pokenode-ts';
 import { getURL, logError } from '@/lib/utils';
 
 export const DEFAULT_LIMIT = 12;
@@ -42,4 +42,24 @@ export const getPaginatedPokemons = async (
       results: [],
     } as NamedAPIResourceList;
   }
+};
+
+// CALLING EXTERNAL API DIRECTLY FOR METADATA AND PRE RENDERING
+// generateMetadata and generateStaticParams cannot call internal API routes
+// because they not run in build time
+export const getPokemonDirectly = async (identifier: string | number) => {
+  const API = new PokemonClient();
+  if (isNaN(Number(identifier)))
+    return await API.getPokemonByName(identifier as string);
+  return await API.getPokemonById(Number(identifier));
+};
+
+export const getPokemonsDirectly = async () => {
+  const API = new PokemonClient();
+  const pokemons = await API.listPokemons(0, 10000);
+  return Promise.all(
+    pokemons.results.map(
+      async pokemon => await API.getPokemonByName(pokemon.name),
+    ),
+  );
 };

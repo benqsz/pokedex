@@ -30,7 +30,7 @@
   --primary-foreground: #141414;
 
   --secondary: #a0a0a0;
-  --secondary-foreground: #f1f1f1;
+  --secondary-foreground: #a0a0a0;
   --accent: #ffc3c3;
   --accent-foreground: #141414;
   --destructive: #f1a7a7;
@@ -48,7 +48,7 @@
   --secondary: #f1a7a7;
   --secondary-foreground: #a0a0a0;
   --accent: #ff7777;
-  --accent-foreground: #141414;
+  --accent-foreground: #f1f1f1;
   --destructive: #f1a7a7;
   --border: #555555;
   --input: #656565;
