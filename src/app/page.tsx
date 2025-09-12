@@ -21,12 +21,17 @@ export default async function HomePage(props: PageProps<'/'>) {
   return (
     <MainWrapper>
       <Container>
-        <Search />
+        <Suspense>
+          <Search />
+        </Suspense>
+
         <h1>Pokedex</h1>
         <Suspense key={query + currentPage} fallback={<PokemonListSkeleton />}>
           <PokemonList pokemons={paginatedPokemons.results} />
         </Suspense>
-        <PokemonPagination totalPages={totalPages} visiblePages={3} />
+        <Suspense>
+          <PokemonPagination totalPages={totalPages} visiblePages={3} />
+        </Suspense>
       </Container>
     </MainWrapper>
   );
