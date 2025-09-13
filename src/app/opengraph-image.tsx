@@ -7,6 +7,8 @@ export const size = {
 
 export const contentType = 'image/png';
 
+export { Image as LayoutOgImage };
+
 export default function Image() {
   return new ImageResponse(
     (
