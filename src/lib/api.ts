@@ -9,6 +9,8 @@ import { getURL, logError } from '@/lib/utils';
 export const DEFAULT_LIMIT = 12;
 const DEFAULT_OFFSET = 0;
 
+export const LAST_POKEMON_ID = 10277;
+
 const fetchApi = async (url: string) => {
   const response = await fetch(getURL + url);
   if (!response.ok) {

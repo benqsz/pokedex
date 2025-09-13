@@ -6,7 +6,7 @@ function Footer() {
     <footer className="text-center">
       <Container>
         <Link
-          href="httsp://szawracki.pl"
+          href="https://szawracki.pl"
           target="_blank"
           rel="noopener noreferrer"
           className="text-secondary-foreground text-sm decoration-1 underline-offset-4 hover:underline active:underline"

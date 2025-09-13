@@ -1,5 +1,6 @@
 'use client';
 
+import { AppProgressProvider as ProgressProvider } from '@bprogress/next';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
 import { ReactNode } from 'react';
 
@@ -15,7 +16,14 @@ function Providers({ children }: Props) {
       enableSystem
       disableTransitionOnChange
     >
-      {children}
+      <ProgressProvider
+        height="2px"
+        color="var(--color-accent)"
+        options={{ showSpinner: false }}
+        shallowRouting
+      >
+        {children}
+      </ProgressProvider>
     </NextThemesProvider>
   );
 }

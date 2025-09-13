@@ -13,6 +13,7 @@
     "clean": "pnpm format && pnpm lint --fix && pnpm typecheck"
   },
   "dependencies": {
+    "@bprogress/next": "^3.2.12",
     "@phosphor-icons/react": "^2.1.10",
     "@radix-ui/react-slot": "^1.2.3",
     "axios": "^1.12.0",

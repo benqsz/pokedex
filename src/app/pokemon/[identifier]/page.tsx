@@ -1,6 +1,9 @@
+import { ArrowLeftIcon, ArrowRightIcon } from '@phosphor-icons/react/ssr';
 import { Metadata } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { Button } from '@/components/ui/button';
 import {
   Carousel,
   CarouselContent,
@@ -9,9 +12,21 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import { Container } from '@/components/ui/container';
-import { GoBackButton } from '@/components/ui/go-back-button';
 import { MainWrapper } from '@/components/ui/main-wrapper';
-import { getPokemon, getPokemonImgs, getTypeColor } from '@/lib/api';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import {
+  getPokemon,
+  getPokemonImgs,
+  getTypeColor,
+  LAST_POKEMON_ID,
+} from '@/lib/api';
 import { formatPokemonId, toTitleCase } from '@/lib/utils';
 
 export async function generateMetadata(
@@ -41,14 +56,29 @@ export default async function PokemonPage(
         : `radial-gradient(circle, ${colors[0]} 0%, ${colors[1]} 100%)`,
   };
 
+  const nextPokemon =
+    pokemon.id === LAST_POKEMON_ID
+      ? await getPokemon(1)
+      : await getPokemon(String(pokemon.id + 1));
+  const prevPokemon =
+    pokemon.id === 1
+      ? await getPokemon(LAST_POKEMON_ID)
+      : await getPokemon(String(pokemon.id));
+
   return (
     <MainWrapper>
-      <Container>
+      <Container className="space-y-6">
         <div
           className="fixed top-0 bottom-0 left-0 -z-10 aspect-square h-full w-1/10 opacity-50 blur-2xl"
           style={gradient}
         />
-        <h1 className="text-[100px] font-bold"> {toTitleCase(pokemon.name)}</h1>
+        <div
+          className="fixed top-0 right-0 bottom-0 -z-10 aspect-square h-full w-1/10 opacity-50 blur-2xl"
+          style={gradient}
+        />
+        <h1 className="text-center text-4xl font-bold md:text-[100px]">
+          {toTitleCase(pokemon.name)}
+        </h1>
         <Carousel
           opts={{
             loop: true,
@@ -70,46 +100,88 @@ export default async function PokemonPage(
             ))}
           </CarouselContent>
           <div className="mt-4 flex justify-center gap-4">
-            <CarouselPrevious />
-            <CarouselNext />
+            <CarouselPrevious variant="ghost" size="icon" />
+            <CarouselNext variant="ghost" size="icon" />
           </div>
         </Carousel>
-        <span>{formatPokemonId(pokemon.id)}</span>
-        <ul className="space-x-2">
-          {pokemon.types.map(({ type }) => (
-            <li
-              key={type.name}
-              style={{
-                backgroundColor: getTypeColor(type.name),
-              }}
-              className="inline-block rounded-sm px-2 py-0.5 text-sm font-medium"
-            >
-              {toTitleCase(type.name)}{' '}
-            </li>
-          ))}
-        </ul>
+        <h2
+          className="text-center text-2xl font-semibold"
+          aria-label="Pokemon id in pokedex"
+        >
+          {formatPokemonId(pokemon.id)}
+        </h2>
         <div>
-          <h2>Abilities</h2>
-          {pokemon.abilities.map(({ ability }) => (
-            <span key={ability.name}>{toTitleCase(ability.name)} </span>
-          ))}
+          <h2 className="sr-only" id="types">
+            Types
+          </h2>
+          <ul className="mx-auto w-fit space-x-2" aria-labelledby="types">
+            {pokemon.types.map(({ type }) => (
+              <li
+                key={type.name}
+                style={{
+                  backgroundColor: getTypeColor(type.name),
+                }}
+                className="inline-block rounded-sm px-2 py-0.5 text-sm font-medium"
+              >
+                {toTitleCase(type.name)}
+              </li>
+            ))}
+          </ul>
         </div>
-        <div>
-          <h2>Stats</h2>
-          {pokemon.stats.map(({ base_stat, stat }) => (
-            <div key={stat.name}>
-              {toTitleCase(stat.name)}: {base_stat}
-            </div>
-          ))}
+
+        <Table className="mx-auto max-w-md">
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Stat</TableHead>
+              <TableHead>Percentage</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {pokemon.stats.map(({ base_stat, stat }) => {
+              const percentage = Math.min((base_stat / 255) * 100, 100);
+              return (
+                <TableRow key={stat.name}>
+                  <TableCell className="pr-10">
+                    {toTitleCase(stat.name)}
+                  </TableCell>
+                  <TableCell>{base_stat}</TableCell>
+                  <TableCell>
+                    <div className="bg-foreground h-fit w-[255px] rounded-full">
+                      <div
+                        className="bg-accent rounded-full px-2 py-0.5"
+                        style={{
+                          width: `${percentage}%`,
+                        }}
+                      />
+                    </div>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+        <div className="mx-auto grid max-w-md grid-cols-1 items-center justify-center gap-4 sm:grid-cols-3">
+          {prevPokemon && (
+            <Button variant="ghost" size="sm" asChild>
+              <Link href={`/pokemon/${prevPokemon.id}`}>
+                <ArrowLeftIcon />
+                {toTitleCase(prevPokemon.name)}
+              </Link>
+            </Button>
+          )}
+          <Button variant="outline" size="sm" asChild>
+            <Link href="/">See all Pokémons</Link>
+          </Button>
+          {nextPokemon && (
+            <Button variant="ghost" size="sm" asChild>
+              <Link href={`/pokemon/${nextPokemon.id}`}>
+                {toTitleCase(nextPokemon.name)}
+                <ArrowRightIcon />
+              </Link>
+            </Button>
+          )}
         </div>
-        <div>
-          <h2>Dimensions</h2>
-          <div>Height: {pokemon.height / 10} m</div>
-          <div>Weight: {pokemon.weight / 10} kg</div>
-        </div>
-        <GoBackButton variant="outline" size="sm" className="mx-auto block">
-          Go back
-        </GoBackButton>
       </Container>
     </MainWrapper>
   );
