@@ -1,6 +1,11 @@
 import { ImageResponse } from 'next/og';
-import { getPokemon, getPokemonImgs, getTypeColor } from '@/lib/api';
 import { LayoutOgImage } from '@/app/opengraph-image';
+import {
+  getPokemon,
+  getPokemonImgs,
+  getTypeColor,
+  getTypeGradient,
+} from '@/lib/api';
 import { formatPokemonId, toTitleCase } from '@/lib/utils';
 
 export const size = {
@@ -16,12 +21,7 @@ export default async function Image(props: PageProps<'/pokemon/[identifier]'>) {
   if (!pokemon) return LayoutOgImage();
 
   const colors = pokemon.types.map(type => getTypeColor(type.type.name));
-  const gradient = {
-    background:
-      colors.length === 1
-        ? colors[0]
-        : `radial-gradient(circle, ${colors[0]} 0%, ${colors[1]} 100%)`,
-  };
+  const gradient = getTypeGradient(colors);
 
   return new ImageResponse(
     (
@@ -40,25 +40,27 @@ export default async function Image(props: PageProps<'/pokemon/[identifier]'>) {
       >
         <div
           style={{
-            top: 0,
-            left: 0,
             bottom: 0,
-            height: '100%',
-            width: '10%',
+            display: 'flex',
             filter: 'blur(40px)',
+            height: '100%',
+            left: 0,
             position: 'absolute',
+            top: 0,
+            width: '10%',
             ...gradient,
           }}
         />
         <div
           style={{
-            top: 0,
-            right: 0,
             bottom: 0,
-            height: '100%',
-            width: '10%',
+            display: 'flex',
             filter: 'blur(40px)',
+            height: '100%',
             position: 'absolute',
+            right: 0,
+            top: 0,
+            width: '10%',
             ...gradient,
           }}
         />
@@ -68,8 +70,23 @@ export default async function Image(props: PageProps<'/pokemon/[identifier]'>) {
           width={200}
           height={200}
         />
-        <div style={{ marginTop: 40 }}>Pokedex</div>
-        <div style={{ fontSize: 24, marginTop: 20 }}>
+        <div
+          style={{
+            display: 'flex',
+            fontSize: 48,
+            fontWeight: 800,
+            marginTop: 40,
+          }}
+        >
+          Pokedex
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            fontSize: 24,
+            marginTop: 20,
+          }}
+        >
           {formatPokemonId(pokemon.id)} - {toTitleCase(pokemon.name)}
         </div>
       </div>

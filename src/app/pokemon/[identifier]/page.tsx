@@ -25,6 +25,7 @@ import {
   getPokemon,
   getPokemonImgs,
   getTypeColor,
+  getTypeGradient,
   LAST_POKEMON_ID,
 } from '@/lib/api';
 import { formatPokemonId, toTitleCase } from '@/lib/utils';
@@ -49,12 +50,7 @@ export default async function PokemonPage(
 
   const imgs = getPokemonImgs(pokemon.sprites);
   const colors = pokemon.types.map(type => getTypeColor(type.type.name));
-  const gradient = {
-    background:
-      colors.length === 1
-        ? colors[0]
-        : `radial-gradient(circle, ${colors[0]} 0%, ${colors[1]} 100%)`,
-  };
+  const gradient = getTypeGradient(colors);
 
   const nextPokemon =
     pokemon.id === LAST_POKEMON_ID
@@ -69,11 +65,11 @@ export default async function PokemonPage(
     <MainWrapper>
       <Container className="space-y-6">
         <div
-          className="fixed top-0 bottom-0 left-0 -z-10 aspect-square h-full w-1/10 opacity-50 blur-2xl"
+          className="fixed top-0 bottom-0 left-0 -z-10 aspect-square h-full w-1/10 blur-2xl"
           style={gradient}
         />
         <div
-          className="fixed top-0 right-0 bottom-0 -z-10 aspect-square h-full w-1/10 opacity-50 blur-2xl"
+          className="fixed top-0 right-0 bottom-0 -z-10 aspect-square h-full w-1/10 blur-2xl"
           style={gradient}
         />
         <h1 className="text-center text-4xl font-bold md:text-[100px]">

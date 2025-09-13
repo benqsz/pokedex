@@ -1,9 +1,4 @@
-import {
-  NamedAPIResourceList,
-  Pokemon,
-  PokemonClient,
-  PokemonSprites,
-} from 'pokenode-ts';
+import { NamedAPIResourceList, Pokemon, PokemonSprites } from 'pokenode-ts';
 import { getURL, logError } from '@/lib/utils';
 
 export const DEFAULT_LIMIT = 12;
@@ -99,16 +94,13 @@ export const getTypeColor = (type: string) => {
   return colors[type as keyof typeof colors] || '#81a596';
 };
 
-// CALLING EXTERNAL API DIRECTLY FOR PRE RENDERING
-// generateStaticParams cannot call internal API routes
-// because they not run in build time
-
-export const getPokemonsDirectly = async () => {
-  const API = new PokemonClient();
-  const pokemons = await API.listPokemons(0, 10000);
-  return Promise.all(
-    pokemons.results.map(
-      async pokemon => await API.getPokemonByName(pokemon.name),
-    ),
-  );
+export const getTypeGradient = (colors: string[]) => {
+  const opacity = '80';
+  const changedColors = colors.map(color => color + opacity);
+  return {
+    background:
+      colors.length === 1
+        ? changedColors[0]
+        : `radial-gradient(circle, ${changedColors[0]} 0%, ${changedColors[1]} 100%)`,
+  };
 };

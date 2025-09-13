@@ -1,9 +1,14 @@
 import type { MetadataRoute } from 'next';
-import { getPokemonsDirectly } from '@/lib/api';
+import { getPaginatedPokemons, getPokemon } from '@/lib/api';
 import { getURL } from '@/lib/utils';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const pokemons = await getPokemonsDirectly();
+  const paginatedPokemons = await getPaginatedPokemons();
+  const pokemons = await Promise.all(
+    paginatedPokemons.results.map(async pokemon => {
+      return await getPokemon(pokemon.name);
+    }),
+  );
 
   return [
     {
@@ -11,15 +16,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1,
       url: `${getURL}`,
     },
-    ...pokemons.map(pokemon => ({
-      lastModified: new Date(),
-      priority: 0.8,
-      url: `${getURL}/pokemon/${pokemon.name}`,
-    })),
-    ...pokemons.map(pokemon => ({
-      lastModified: new Date(),
-      priority: 0.8,
-      url: `${getURL}/pokemon/${pokemon.id}`,
-    })),
+    ...pokemons
+      .filter(pokemon => pokemon !== null)
+      .map(pokemon => ({
+        lastModified: new Date(),
+        priority: 0.8,
+        url: `${getURL}/pokemon/${pokemon?.name}`,
+      })),
+    ...pokemons
+      .filter(pokemon => pokemon !== null)
+      .map(pokemon => ({
+        lastModified: new Date(),
+        priority: 0.8,
+        url: `${getURL}/pokemon/${pokemon.id}`,
+      })),
   ];
 }
