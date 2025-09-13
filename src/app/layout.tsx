@@ -6,17 +6,17 @@ import { Providers } from '@/components/providers';
 import { getURL } from '@/lib/utils';
 
 export const metadata: Metadata = {
+  description: 'Made by benqsz <github.com/benqsz>',
+  openGraph: {
+    description: 'Made by benqsz <github.com/benqsz>',
+    siteName: getURL,
+    title: 'Pokédex',
+    type: 'website',
+    url: getURL,
+  },
   title: {
     default: 'Pokédex',
     template: '%s | Pokédex',
-  },
-  description: 'Made by benqsz <github.com/benqsz>',
-  openGraph: {
-    title: 'Pokédex',
-    description: 'Made by benqsz <github.com/benqsz>',
-    url: getURL,
-    siteName: getURL,
-    type: 'website',
   },
   twitter: {
     card: 'summary_large_image',

@@ -1,8 +1,8 @@
 import { ImageResponse } from 'next/og';
 
 export const size = {
-  width: 800,
   height: 400,
+  width: 800,
 };
 
 export const contentType = 'image/png';
@@ -12,15 +12,15 @@ export default function Image() {
     (
       <div
         style={{
-          height: '100%',
-          width: '100%',
+          alignItems: 'center',
+          backgroundColor: '#fff',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: '#fff',
           fontSize: 32,
           fontWeight: 600,
+          height: '100%',
+          justifyContent: 'center',
+          width: '100%',
         }}
       >
         <svg

@@ -15,3 +15,6 @@ export const toTitleCase = (str: string) =>
 
 export const arrayFromNumber = (n: number) =>
   Array.from({ length: n }).map((_, i) => i);
+
+export const formatPokemonId = (id: number) =>
+  `#${id.toString().padStart(3, '0')}`;

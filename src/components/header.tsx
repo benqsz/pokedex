@@ -10,6 +10,7 @@ function Header() {
     <header className="bg-background/70 sticky top-0 z-10 backdrop-blur-xs">
       <Container className="flex h-fit items-center justify-between gap-4 space-y-0">
         <Link href="/">
+          <span className="sr-only">Pokedex logo- go to home page</span>
           <Icon size={32} />
         </Link>
         <div className="space-x-2">

@@ -4,7 +4,6 @@ import { MoonStarsIcon, SunIcon } from '@phosphor-icons/react/ssr';
 import { useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 
 type props = {
   className?: string;
@@ -54,7 +53,7 @@ export const ThemeButton = ({ className }: props) => {
       title="Toggle theme"
       ref={buttonRef}
       onClick={changeTheme}
-      className={cn('cursor-pointer', className)}
+      className={className}
     >
       {isDarkMode ? <SunIcon size={32} /> : <MoonStarsIcon size={32} />}
     </Button>

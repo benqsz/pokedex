@@ -1,32 +1,29 @@
+import { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel';
 import { Container } from '@/components/ui/container';
+import { GoBackButton } from '@/components/ui/go-back-button';
 import { MainWrapper } from '@/components/ui/main-wrapper';
-import { getPokemon, getPokemonDirectly, getPokemonsDirectly } from '@/lib/api';
-import { toTitleCase } from '@/lib/utils';
-import { Metadata } from 'next';
+import { getPokemon, getPokemonImgs, getTypeColor } from '@/lib/api';
+import { formatPokemonId, toTitleCase } from '@/lib/utils';
 
 export async function generateMetadata(
   props: PageProps<'/pokemon/[identifier]'>,
 ): Promise<Metadata> {
   const { identifier } = await props.params;
-  const pokemon = await getPokemonDirectly(identifier);
+  const pokemon = await getPokemon(identifier);
+  if (!pokemon) notFound();
   return {
     title: toTitleCase(pokemon.name),
   };
 }
-
-export const generateStaticParams = async () => {
-  const pokemons = await getPokemonsDirectly();
-  return [
-    ...pokemons.map(pokemon => ({
-      identifier: pokemon.name,
-    })),
-    ...pokemons.map(pokemon => ({
-      identifier: pokemon.id.toString(),
-    })),
-  ];
-};
 
 export default async function PokemonPage(
   props: PageProps<'/pokemon/[identifier]'>,
@@ -35,17 +32,62 @@ export default async function PokemonPage(
   const pokemon = await getPokemon(identifier);
   if (!pokemon) notFound();
 
+  const imgs = getPokemonImgs(pokemon.sprites);
+  const colors = pokemon.types.map(type => getTypeColor(type.type.name));
+  const gradient = {
+    background:
+      colors.length === 1
+        ? colors[0]
+        : `radial-gradient(circle, ${colors[0]} 0%, ${colors[1]} 100%)`,
+  };
+
   return (
     <MainWrapper>
       <Container>
-        <span>#{pokemon.id.toString().padStart(3, '0')}</span>
-        <h1> {toTitleCase(pokemon.name)}</h1>
-        <div>
-          <h2>Type</h2>
+        <div
+          className="fixed top-0 bottom-0 left-0 -z-10 aspect-square h-full w-1/10 opacity-50 blur-2xl"
+          style={gradient}
+        />
+        <h1 className="text-[100px] font-bold"> {toTitleCase(pokemon.name)}</h1>
+        <Carousel
+          opts={{
+            loop: true,
+          }}
+        >
+          <CarouselContent>
+            {imgs.map((img, i) => (
+              <CarouselItem key={i}>
+                <Image
+                  src={img}
+                  width={450}
+                  height={450}
+                  priority
+                  sizes="450px"
+                  alt={`${toTitleCase(pokemon.name)} sprite ${i + 1}`}
+                  className="mx-auto h-auto w-full max-w-md"
+                />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <div className="mt-4 flex justify-center gap-4">
+            <CarouselPrevious />
+            <CarouselNext />
+          </div>
+        </Carousel>
+        <span>{formatPokemonId(pokemon.id)}</span>
+        <ul className="space-x-2">
           {pokemon.types.map(({ type }) => (
-            <span key={type.name}>{toTitleCase(type.name)} </span>
+            <li
+              key={type.name}
+              style={{
+                backgroundColor: getTypeColor(type.name),
+              }}
+              className="inline-block rounded-sm px-2 py-0.5 text-sm font-medium"
+            >
+              {toTitleCase(type.name)}{' '}
+            </li>
           ))}
-        </div>
+        </ul>
         <div>
           <h2>Abilities</h2>
           {pokemon.abilities.map(({ ability }) => (
@@ -61,27 +103,13 @@ export default async function PokemonPage(
           ))}
         </div>
         <div>
-          <h2>Moves</h2>
-          {pokemon.moves.map(({ move }) => (
-            <span key={move.name}>{toTitleCase(move.name)} </span>
-          ))}
-        </div>
-        <div>
           <h2>Dimensions</h2>
           <div>Height: {pokemon.height / 10} m</div>
           <div>Weight: {pokemon.weight / 10} kg</div>
         </div>
-
-        <Image
-          src={
-            pokemon.sprites.other!['official-artwork']?.front_default ||
-            (pokemon.sprites.front_default as string)
-          }
-          width={200}
-          height={200}
-          priority
-          alt={toTitleCase(pokemon.name)}
-        />
+        <GoBackButton variant="outline" size="sm" className="mx-auto block">
+          Go back
+        </GoBackButton>
       </Container>
     </MainWrapper>
   );

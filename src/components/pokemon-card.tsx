@@ -2,8 +2,8 @@ import * as motion from 'motion/react-client';
 import Image from 'next/image';
 import Link from 'next/link';
 import { NamedAPIResource } from 'pokenode-ts';
-import { getPokemon } from '@/lib/api';
-import { toTitleCase } from '@/lib/utils';
+import { getPokemon, getPokemonImgs } from '@/lib/api';
+import { formatPokemonId, toTitleCase } from '@/lib/utils';
 
 type Props = {
   pokemon: NamedAPIResource;
@@ -12,6 +12,7 @@ type Props = {
 async function PokemonCard({ pokemon }: Props) {
   const pokemonData = await getPokemon(pokemon.name);
   if (!pokemonData) return null;
+  const image = getPokemonImgs(pokemonData.sprites);
 
   return (
     <li className="relative h-60 rounded-md border pt-2">
@@ -20,7 +21,7 @@ async function PokemonCard({ pokemon }: Props) {
         className="flex h-full flex-col items-center justify-center"
       >
         <span className="text-secondary-foreground absolute top-1 left-1">
-          #{pokemonData.id.toString().padStart(3, '0')}
+          {formatPokemonId(pokemonData.id)}
         </span>
         <motion.div
           initial={false}
@@ -29,10 +30,7 @@ async function PokemonCard({ pokemon }: Props) {
           transition={{ duration: 0.3 }}
         >
           <Image
-            src={
-              pokemonData.sprites.other!['official-artwork']?.front_default ||
-              (pokemonData.sprites.front_default as string)
-            }
+            src={image[0]}
             alt={`${toTitleCase(pokemonData.name)} sprite`}
             width={160}
             height={160}
