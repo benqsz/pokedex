@@ -4,7 +4,7 @@ import { getURL } from '@/lib/utils';
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
-      disallow: '/',
+      disallow: '',
       userAgent: '*',
     },
     sitemap: `${getURL}/sitemap.xml`,

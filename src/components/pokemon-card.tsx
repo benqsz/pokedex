@@ -32,9 +32,9 @@ async function PokemonCard({ pokemon }: Props) {
           <Image
             src={image[0]}
             alt={`${toTitleCase(pokemonData.name)} sprite`}
-            width={160}
-            height={160}
-            className="m-auto h-9/10 w-auto"
+            width={180}
+            height={180}
+            loading="lazy"
           />
         </motion.div>
         <h2>{toTitleCase(pokemonData.name)}</h2>

@@ -21,6 +21,7 @@ function Providers({ children }: Props) {
         color="var(--color-accent)"
         options={{ showSpinner: false }}
         shallowRouting
+        disableSameURL={false}
       >
         {children}
       </ProgressProvider>
