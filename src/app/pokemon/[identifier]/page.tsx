@@ -1,4 +1,5 @@
 import { ArrowLeftIcon, ArrowRightIcon } from '@phosphor-icons/react/ssr';
+import fontColorContrast from 'font-color-contrast';
 import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -29,7 +30,6 @@ import {
   LAST_POKEMON_ID,
 } from '@/lib/api';
 import { formatPokemonId, toTitleCase } from '@/lib/utils';
-import fontColorContrast from 'font-color-contrast';
 
 export async function generateMetadata(
   props: PageProps<'/pokemon/[identifier]'>,

@@ -1,5 +1,8 @@
 'use client';
 
+import { useRouter } from '@bprogress/next/app';
+import { GearIcon } from '@phosphor-icons/react/ssr';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -10,11 +13,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { GearIcon } from '@phosphor-icons/react/ssr';
 import { DEFAULT_LIMIT } from '@/lib/api';
 import { arrayFromNumber } from '@/lib/utils';
-import { usePathname, useSearchParams } from 'next/navigation';
-import { useRouter } from '@bprogress/next/app';
 
 function SettingsDropdown() {
   const searchParams = useSearchParams();

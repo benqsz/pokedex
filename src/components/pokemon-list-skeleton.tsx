@@ -1,6 +1,5 @@
 import { Skeleton } from '@/components/ui/skeleton';
 import { arrayFromNumber } from '@/lib/utils';
-import { DEFAULT_LIMIT } from '@/lib/api';
 
 type Props = {
   count: number;

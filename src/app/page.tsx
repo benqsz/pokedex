@@ -3,10 +3,10 @@ import { PokemonList } from '@/components/pokemon-list';
 import { PokemonListSkeleton } from '@/components/pokemon-list-skeleton';
 import { PokemonPagination } from '@/components/pokemon-pagination';
 import { Search } from '@/components/search';
+import { SettingsDropdown } from '@/components/settings-dropdown';
 import { Container } from '@/components/ui/container';
 import { MainWrapper } from '@/components/ui/main-wrapper';
 import { DEFAULT_LIMIT, getPaginatedPokemons } from '@/lib/api';
-import { SettingsDropdown } from '@/components/settings-dropdown';
 
 export default async function HomePage(props: PageProps<'/'>) {
   const searchParams = await props.searchParams;
