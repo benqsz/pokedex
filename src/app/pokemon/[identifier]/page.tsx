@@ -29,6 +29,7 @@ import {
   LAST_POKEMON_ID,
 } from '@/lib/api';
 import { formatPokemonId, toTitleCase } from '@/lib/utils';
+import fontColorContrast from 'font-color-contrast';
 
 export async function generateMetadata(
   props: PageProps<'/pokemon/[identifier]'>,
@@ -111,17 +112,21 @@ export default async function PokemonPage(
             Types
           </h2>
           <ul className="mx-auto w-fit space-x-2" aria-labelledby="types">
-            {pokemon.types.map(({ type }) => (
-              <li
-                key={type.name}
-                style={{
-                  backgroundColor: getTypeColor(type.name),
-                }}
-                className="inline-block rounded-sm px-2 py-0.5 text-sm font-medium"
-              >
-                {toTitleCase(type.name)}
-              </li>
-            ))}
+            {pokemon.types.map(({ type }) => {
+              const typeColor = getTypeColor(type.name);
+              return (
+                <li
+                  key={type.name}
+                  style={{
+                    backgroundColor: typeColor,
+                    color: fontColorContrast(typeColor),
+                  }}
+                  className="inline-block rounded-sm px-2 py-0.5 text-sm font-medium"
+                >
+                  {toTitleCase(type.name)}
+                </li>
+              );
+            })}
           </ul>
         </div>
 
