@@ -1,6 +1,7 @@
 'use client';
 
 import { AppProgressProvider as ProgressProvider } from '@bprogress/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
 import { ReactNode } from 'react';
 
@@ -23,6 +24,7 @@ function Providers({ children }: Props) {
         shallowRouting
         disableSameURL={false}
       >
+        <SpeedInsights />
         {children}
       </ProgressProvider>
     </NextThemesProvider>
