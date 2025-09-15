@@ -19,7 +19,7 @@ function Search() {
   }, 300);
 
   return (
-    <div>
+    <div className="w-full">
       <label className="sr-only" htmlFor="search">
         Search for pokemons
       </label>
