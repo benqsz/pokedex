@@ -43,14 +43,14 @@ function SettingsDropdown() {
           value={searchParams.get('limit') || DEFAULT_LIMIT.toString()}
           onValueChange={str => handleLimit(Number(str))}
         >
-          {arrayFromNumber(3).map(i => (
-            <DropdownMenuRadioItem
-              key={(i + 1) * DEFAULT_LIMIT}
-              value={((i + 1) * DEFAULT_LIMIT).toString()}
-            >
-              {(i + 1) * DEFAULT_LIMIT}
-            </DropdownMenuRadioItem>
-          ))}
+          {arrayFromNumber(4).map(i => {
+            const value = i === 0 ? DEFAULT_LIMIT / 2 : i * DEFAULT_LIMIT;
+            return (
+              <DropdownMenuRadioItem key={value} value={value.toString()}>
+                {value}
+              </DropdownMenuRadioItem>
+            );
+          })}
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -32,7 +32,7 @@ export default async function HomePage(props: PageProps<'/'>) {
 
         <h1>Pokedex</h1>
         <Suspense
-          key={query + currentPage}
+          key={query + currentPage + currentLimit}
           fallback={<PokemonListSkeleton count={currentLimit} />}
         >
           <PokemonList pokemons={paginatedPokemons.results} />
