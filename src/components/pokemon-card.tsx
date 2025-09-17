@@ -34,7 +34,6 @@ async function PokemonCard({ pokemon }: Props) {
             alt={`${toTitleCase(pokemonData.name)} sprite`}
             width={180}
             height={180}
-            loading="lazy"
           />
         </motion.div>
         <h2>{toTitleCase(pokemonData.name)}</h2>

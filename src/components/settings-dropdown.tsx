@@ -32,7 +32,12 @@ function SettingsDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button
+          variant="outline"
+          size="icon"
+          aria-label="Pokemon search settings"
+          title="Pokemon search settings"
+        >
           <GearIcon />
         </Button>
       </DropdownMenuTrigger>

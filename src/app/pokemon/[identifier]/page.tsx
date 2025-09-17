@@ -88,7 +88,8 @@ export default async function PokemonPage(
                   src={img}
                   width={450}
                   height={450}
-                  priority
+                  fetchPriority="high"
+                  priority={i === 0}
                   sizes="(max-width: 500px) 100vw, 450px"
                   alt={`${toTitleCase(pokemon.name)} sprite ${i + 1}`}
                   className="mx-auto h-auto w-full max-w-md"
