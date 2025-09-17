@@ -43,7 +43,7 @@ This project shows a list of pokemons using data from the [PokéAPI](https://pok
 - Next.js
 - TypeScript
 - Tailwind CSS
-- Pokenode-ts - node.js wrapper for the PokéAPI with built-in types.
+- [Pokenode-ts](https://pokenode-ts.vercel.app) - node.js wrapper for the PokéAPI with built-in types.
 
 ### Requirements
 
@@ -74,8 +74,8 @@ This project shows a list of pokemons using data from the [PokéAPI](https://pok
 
 You can view the full Lighthouse reports here:
 
-- [Home page report](/public/lighthouse-home.html)
-- [Pokemon page report](/public/lighthouse-pokemon.html)
+- [Home page report](https://pokedex.szawracki.pl/lighthouse-home.html)
+- [Pokemon page report](https://pokedex.szawracki.pl/lighthouse-pokemon.html)
 
 ## License
 
