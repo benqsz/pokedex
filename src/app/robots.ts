@@ -3,10 +3,16 @@ import { getURL } from '@/lib/utils';
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: {
-      disallow: '',
-      userAgent: '*',
-    },
+    rules: [
+      {
+        userAgent: 'GPTBot',
+        disallow: '/',
+      },
+      {
+        userAgent: '*',
+        allow: '/',
+      },
+    ],
     sitemap: `${getURL}/sitemap.xml`,
   };
 }
